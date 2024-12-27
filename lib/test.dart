@@ -1,4 +1,3 @@
-import 'package:canvas_test_2/pac_man.dart';
 import 'package:flutter/material.dart';
 
 // class Picasso extends CustomPainter {
@@ -20,9 +19,9 @@ class Picasso extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 300,
+        height: 200,
         child: CarouselView.weighted(
-          flexWeights: const [1, 2, 1],
+          flexWeights: const [4, 1],
           itemSnapping: true,
           children: List<Widget>.generate(10, (int index) {
             return Container(

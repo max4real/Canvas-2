@@ -26,8 +26,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class BatteryPainter extends CustomPainter {
   final margin = 30.0; // The space between the battery and the parent widget
@@ -55,6 +55,58 @@ class BatteryPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // Battery border
+    final bdr = _borderRRect(size);
+    canvas.drawRRect(bdr, borderPaint);
+
+    // Battery pin
+    final pinRect = _pinRect(bdr);
+    canvas.drawArc(pinRect, math.pi / 2, -math.pi, true, pinPaint);
+
+    // Battery charge progress
+    final chargeRRect = _chargeRRect(bdr);
+    canvas.drawRRect(chargeRRect, chargePaint);
+  }
+
+  RRect _borderRRect(Size size) {
+    // 1
+    final symmetricalMargin = margin * 2;
+    // 2
+    final width = size.width - symmetricalMargin - padding - pinWidth;
+    // 3
+    final height = width / 2;
+    // 4
+    final top = (size.height / 2) - (height / 2);
+    // 5
+    final radius = Radius.circular(height * 0.2);
+    // 6
+    final bounds = Rect.fromLTWH(margin, top, width, height);
+    // 7
+    return RRect.fromRectAndRadius(bounds, radius);
+  }
+
+  Rect _pinRect(RRect bdr) {
+    // 1
+    final center = Offset(bdr.right + padding, bdr.top + (bdr.height / 2.0));
+    // 2
+    final height = bdr.height * 0.38;
+    // 3
+    final width = pinWidth * 2;
+    // 4
+    return Rect.fromCenter(center: center, width: width, height: height);
+  }
+
+  RRect _chargeRRect(RRect bdr) {
+    final percent = minCharge * ((charge / minCharge).round());
+    final left = bdr.left + padding;
+    final top = bdr.top + padding;
+    final right = bdr.right - padding;
+    final bottom = bdr.bottom - padding;
+    final height = bottom - top;
+    final width = right - left;
+    final radius = Radius.circular(height * 0.15);
+    final rect = Rect.fromLTWH(left, top, width * percent, height);
+    return RRect.fromRectAndRadius(rect, radius);
   }
 
   @override

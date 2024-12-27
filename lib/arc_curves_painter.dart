@@ -13,6 +13,8 @@ class ArcsCurvesPainter extends CustomPainter {
     drawArc(canvas);
     drawQuadraticBezier(canvas);
     drawCubicBezier(canvas);
+    drawCubicBezier2(canvas);
+
   }
 
   @override
@@ -49,5 +51,12 @@ class ArcsCurvesPainter extends CustomPainter {
       ..moveTo(50, 550)
       ..relativeCubicTo(50, -150, 200, -150, 250, 0);
     canvas.drawPath(qCurve2, curvesPaint);
+  }
+
+  void drawCubicBezier2(Canvas canvas) {
+    final cCurve2 = Path()
+      ..moveTo(350, 50)
+      ..relativeCubicTo(0, 450, -300, 300, -150, 250);
+    canvas.drawPath(cCurve2, curvesPaint);
   }
 }
